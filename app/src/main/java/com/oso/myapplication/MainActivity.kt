@@ -14,8 +14,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MyApplicationTheme {
-                //NavigationWrapper()
-                RegisterScreen()
+                NavigationWrapper()
             }
         }
     }

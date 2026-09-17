@@ -4,6 +4,7 @@ package com.oso.myapplication.view.auth.register
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,10 +19,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,9 +36,8 @@ import com.oso.myapplication.view.core.components.Instatex
 
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview
 @Composable
-fun RegisterScreen(registerViewModel: RegisterViewModel = viewModel()){
+fun RegisterScreen(registerViewModel: RegisterViewModel = viewModel(), navigateBack: () -> Unit){
 
     val uiState: RegisterUiState by registerViewModel.uiState.collectAsStateWithLifecycle()
 
@@ -69,7 +69,8 @@ fun RegisterScreen(registerViewModel: RegisterViewModel = viewModel()){
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = "back",
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.clickable { navigateBack()}
                     )
                 }
             )
@@ -84,16 +85,16 @@ fun RegisterScreen(registerViewModel: RegisterViewModel = viewModel()){
         ) {
             AnimatedContent(title) { animatedTitle->
                 Instatex(
+                    modifier = Modifier.fillMaxWidth(),
                     text= animatedTitle,
                     style = MaterialTheme.typography.headlineLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
-            Spacer(Modifier.height(4.dp))
+            Spacer(Modifier.height(8.dp))
             Instatex(
                 text= subtitle,
-                style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Spacer(Modifier.height(16.dp))

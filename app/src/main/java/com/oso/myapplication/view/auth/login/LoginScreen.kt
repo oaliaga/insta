@@ -47,7 +47,10 @@ import com.oso.myapplication.view.core.components.Instatex
 
 @Preview
 @Composable
-fun LoginScreen(loginViewModel: LoginViewModel = viewModel()) {
+fun LoginScreen(
+    loginViewModel: LoginViewModel = viewModel(),
+    navigateToRegister: () -> Unit
+) {
 
     val uiState: LoginUiState by loginViewModel.uiState.collectAsState()
 
@@ -74,19 +77,12 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel()) {
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 label = { Instatex(text = stringResource(R.string.login_screen_textfield_email)) },
-                shape = RoundedCornerShape(
-                    30
-                        .dp
-                ),
-                value =
-                    uiState.email,
-                onValueChange =
-                    { loginViewModel.onEmailChanged(it) })
+                value = uiState.email,
+                onValueChange ={ loginViewModel.onEmailChanged(it) })
             Spacer(modifier = Modifier.height(10.dp))
             InstaTextField(
                 modifier = Modifier.fillMaxWidth(),
                 label = stringResource(R.string.login_screen_textfield_password),
-                shape = RoundedCornerShape(30.dp),
                 value = uiState.password,
                 onValueChange = {
                     loginViewModel.onPasswordChanged(password = it)
@@ -95,7 +91,7 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel()) {
             InstaButton(
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                onClick = {},
+                onClick = { navigateToRegister() },
                 enabled = uiState.isLoginEnabled,
                 text = stringResource(R.string.login_screen_button_login)
             )

@@ -13,7 +13,7 @@ fun Instatex(
     modifier: Modifier = Modifier,
     text: String,
     color: Color = MaterialTheme.colorScheme.onBackground,
-    style: TextStyle = MaterialTheme.typography.bodyLarge
+    style: TextStyle = MaterialTheme.typography.bodySmall
 ) {
     Text(text = text, modifier = modifier, color = color, style = style)
 }

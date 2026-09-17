@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.oso.myapplication.view.auth.login.LoginScreen
+import com.oso.myapplication.view.auth.register.RegisterScreen
 
 @Composable
 fun NavigationWrapper(){
@@ -13,7 +14,10 @@ fun NavigationWrapper(){
     val navController: NavHostController = rememberNavController()
     NavHost(navController = navController, startDestination = Login) {
         composable <Login>{
-            LoginScreen()
+            LoginScreen(navigateToRegister = {navController.navigate(Register)})
+        }
+        composable <Register>{
+            RegisterScreen(navigateBack={navController.popBackStack()})
         }
     }
 }
