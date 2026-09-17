@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">My Application</string>
+
+
+    <!--LoginScreen-->
+
+    <string name="login_screen_header">Español (España)</string>
+    <string name="login_screen_textfield_email">Usuario, correo electrónico o móvil</string>
+    <string name="login_screen_textfield_password">Contraseña</string>
+    <string name="login_screen_button_login">Iniciar sesión</string>
+    <string name="login_screen_text_forgot_password">Has olvidado la contraseña?</string>
+    <string name="login_screen_button_register">Crear cuenta nueva</string>
+    <string name="login_screen_icon_meta">Logo meta</string>
 </resources>
