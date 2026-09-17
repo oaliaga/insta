@@ -7,7 +7,10 @@ import androidx.activity.enableEdgeToEdge
 import com.oso.myapplication.ui.theme.MyApplicationTheme
 import com.oso.myapplication.view.auth.register.RegisterScreen
 import com.oso.myapplication.view.core.navigation.NavigationWrapper
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

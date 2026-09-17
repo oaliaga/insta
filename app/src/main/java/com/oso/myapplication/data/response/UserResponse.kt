@@ -2,8 +2,9 @@ package com.oso.myapplication.data.response
 
 import com.oso.myapplication.domain.entity.UserEntity
 import com.oso.myapplication.domain.entity.UserMode
+import kotlinx.serialization.Serializable
 import javax.annotation.meta.TypeQualifierNickname
-
+@Serializable
 data class UserResponse(
     val userId:String,
     val name:String,

@@ -3,6 +3,7 @@ package com.oso.myapplication.view.auth.login
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -24,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,6 +41,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.oso.myapplication.R
 import com.oso.myapplication.view.core.components.InstaButton
@@ -45,14 +49,20 @@ import com.oso.myapplication.view.core.components.InstaButtonSecundary
 import com.oso.myapplication.view.core.components.InstaTextField
 import com.oso.myapplication.view.core.components.Instatex
 
-@Preview
 @Composable
 fun LoginScreen(
-    loginViewModel: LoginViewModel = viewModel(),
-    navigateToRegister: () -> Unit
+    loginViewModel: LoginViewModel = hiltViewModel(),
+    navigateToRegister: () -> Unit,
+    navigateToHome: () -> Unit
 ) {
 
     val uiState: LoginUiState by loginViewModel.uiState.collectAsState()
+
+    LaunchedEffect(uiState.isUserLogged) {
+        if (uiState.isUserLogged) {
+            navigateToHome()
+        }
+    }
 
     Scaffold { padding ->
         Column(
@@ -74,9 +84,9 @@ fun LoginScreen(
                 contentDescription = "logo"
             )
             Spacer(modifier = Modifier.weight(1f))
-            OutlinedTextField(
+            InstaTextField(
                 modifier = Modifier.fillMaxWidth(),
-                label = { Instatex(text = stringResource(R.string.login_screen_textfield_email)) },
+                label = stringResource(R.string.login_screen_textfield_email),
                 value = uiState.email,
                 onValueChange ={ loginViewModel.onEmailChanged(it) })
             Spacer(modifier = Modifier.height(10.dp))
@@ -90,9 +100,8 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(10.dp))
             InstaButton(
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                onClick = { navigateToRegister() },
-                enabled = uiState.isLoginEnabled,
+                onClick = { loginViewModel.onClickSelected() },
+                enabled = uiState.isLoginEnabled&&!uiState.isLoading,
                 text = stringResource(R.string.login_screen_button_login)
             )
             TextButton(onClick = {}) {
@@ -104,17 +113,23 @@ fun LoginScreen(
             Spacer(modifier = Modifier.weight(1.3f))
             InstaButtonSecundary(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = {},
+                onClick = {navigateToRegister},
                 title = stringResource(R.string.login_screen_button_register),
             )
             Icon(
                 modifier = Modifier
                     .width(60.dp)
                     .padding(vertical = 22.dp),
-                painter = painterResource(R.drawable.ic_meta), contentDescription = stringResource(R.string.login_screen_icon_meta), tint =
-                    MaterialTheme.colorScheme
-                        .onBackground
+                painter = painterResource(R.drawable.ic_meta),
+                contentDescription = stringResource(R.string.login_screen_icon_meta),
+                tint =MaterialTheme.colorScheme.onBackground
             )
+        }
+
+        if (uiState.isLoading) {
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
         }
 
     }

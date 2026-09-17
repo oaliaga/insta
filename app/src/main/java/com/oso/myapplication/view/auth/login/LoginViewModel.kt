@@ -1,16 +1,22 @@
 package com.oso.myapplication.view.auth.login
 
+import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.oso.myapplication.domain.entity.UserEntity
 import com.oso.myapplication.domain.usecase.Login
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class LoginViewModel(val login: Login) : ViewModel() {
+@HiltViewModel
+class LoginViewModel @Inject constructor(val login: Login) : ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState
 
@@ -28,26 +34,40 @@ class LoginViewModel(val login: Login) : ViewModel() {
         verifyLogin()
     }
 
-    fun onClickSelected(){
-        viewModelScope.launch (Dispatchers.IO){
-            login(_uiState.value.email, _uiState.value.password)
+    fun onClickSelected() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response: UserEntity? = login(_uiState.value.email, _uiState.value.password)
+            withContext(Dispatchers.Main) {
+                if (response != null) {
+                    Log.i("LOGIN", "SUCCESS ${response.name}")
+                } else {
+                    Log.i("LOGIN", "ERROR")
+                }
+                loadingState(false)
+            }
+
         }
     }
 
-    private fun verifyLogin(){
-        val enabledLogin: Boolean = isEmailValid(_uiState.value.email)&& isPasswordValid(uiState.value.password)
+    private fun loadingState(isLoading: Boolean) {
+        _uiState.update { it.copy(isLoading = isLoading) }
+    }
+
+    private fun verifyLogin() {
+        val enabledLogin: Boolean = isEmailValid(_uiState.value.email) && isPasswordValid(uiState.value.password)
         _uiState.update { state ->
             state.copy(isLoginEnabled = enabledLogin)
         }
     }
 
-    private fun isEmailValid(email:String): Boolean= Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    private fun isPasswordValid(password:String):Boolean = password.length >=6
+    private fun isEmailValid(email: String): Boolean = Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    private fun isPasswordValid(password: String): Boolean = password.length >= 6
 }
 
 data class LoginUiState(
-    val email: String = "",
-    val password: String = "",
+    val email: String = "oso@oso.cl",
+    val password: String = "oso123",
     val isLoading: Boolean = false,
-    val isLoginEnabled: Boolean = false
+    val isLoginEnabled: Boolean = true,
+    val isUserLogged: Boolean = false
 )

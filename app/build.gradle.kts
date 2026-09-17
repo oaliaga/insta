@@ -66,6 +66,9 @@ dependencies {
 
     implementation(libs.dataPreferences)
 
+    //Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.adapter)
 
     //Testing
     testImplementation(libs.junit)
