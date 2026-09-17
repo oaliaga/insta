@@ -2,11 +2,15 @@ package com.oso.myapplication.view.auth.login
 
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.oso.myapplication.domain.usecase.Login
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(val login: Login) : ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState
 
@@ -24,6 +28,12 @@ class LoginViewModel : ViewModel() {
         verifyLogin()
     }
 
+    fun onClickSelected(){
+        viewModelScope.launch (Dispatchers.IO){
+            login(_uiState.value.email, _uiState.value.password)
+        }
+    }
+
     private fun verifyLogin(){
         val enabledLogin: Boolean = isEmailValid(_uiState.value.email)&& isPasswordValid(uiState.value.password)
         _uiState.update { state ->
@@ -31,8 +41,8 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    fun isEmailValid(email:String): Boolean= Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    fun isPasswordValid(password:String):Boolean = password.length >=6
+    private fun isEmailValid(email:String): Boolean= Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    private fun isPasswordValid(password:String):Boolean = password.length >=6
 }
 
 data class LoginUiState(
