@@ -41,6 +41,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.oso.myapplication.R
 import com.oso.myapplication.view.core.components.InstaButton
+import com.oso.myapplication.view.core.components.InstaButtonSecundary
+import com.oso.myapplication.view.core.components.InstaTextField
 import com.oso.myapplication.view.core.components.Instatex
 
 @Preview
@@ -81,10 +83,9 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel()) {
                 onValueChange =
                     { loginViewModel.onEmailChanged(it) })
             Spacer(modifier = Modifier.height(10.dp))
-            OutlinedTextField(
+            InstaTextField(
                 modifier = Modifier.fillMaxWidth(),
-                label = { Instatex(text = stringResource(R.string.login_screen_textfield_password), color = MaterialTheme.colorScheme
-                    .onBackground) },
+                label = stringResource(R.string.login_screen_textfield_password),
                 shape = RoundedCornerShape(30.dp),
                 value = uiState.password,
                 onValueChange = {
@@ -98,26 +99,25 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel()) {
                 enabled = uiState.isLoginEnabled,
                 text = stringResource(R.string.login_screen_button_login)
             )
-            TextButton(onClick = {}) { Instatex(text = stringResource(R.string.login_screen_text_forgot_password), color = MaterialTheme.colorScheme.onSurfaceVariant) }
-            Spacer(modifier = Modifier.weight(1.3f))
-            OutlinedButton(
-                modifier = Modifier.fillMaxWidth(), onClick = {}, border = BorderStroke(
-                    1.dp, MaterialTheme
-                        .colorScheme.primary
-                )
-            ) {
+            TextButton(onClick = {}) {
                 Instatex(
-                    text
-                    = stringResource(R.string.login_screen_button_register), color = MaterialTheme.colorScheme.primary
+                    text = stringResource(R.string.login_screen_text_forgot_password),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
+            Spacer(modifier = Modifier.weight(1.3f))
+            InstaButtonSecundary(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {},
+                title = stringResource(R.string.login_screen_button_register),
+            )
             Icon(
                 modifier = Modifier
                     .width(60.dp)
                     .padding(vertical = 22.dp),
                 painter = painterResource(R.drawable.ic_meta), contentDescription = stringResource(R.string.login_screen_icon_meta), tint =
                     MaterialTheme.colorScheme
-                    .onBackground
+                        .onBackground
             )
         }
 

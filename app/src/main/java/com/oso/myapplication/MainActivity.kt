@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.oso.myapplication.ui.theme.MyApplicationTheme
+import com.oso.myapplication.view.auth.register.RegisterScreen
 import com.oso.myapplication.view.core.navigation.NavigationWrapper
 
 class MainActivity : ComponentActivity() {
@@ -13,7 +14,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MyApplicationTheme {
-                NavigationWrapper()
+                //NavigationWrapper()
+                RegisterScreen()
             }
         }
     }
