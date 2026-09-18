@@ -17,7 +17,7 @@ data class UserResponse(
 
 fun UserResponse.toDomain(): UserEntity{
     val userMode = when(userType){
-        UserMode.REGULAR_USER.usergiType -> UserMode.REGULAR_USER
+        UserMode.REGULAR_USER.userType -> UserMode.REGULAR_USER
         UserMode.CONTENT_CREATOR_USER.userType -> UserMode.CONTENT_CREATOR_USER
         UserMode.COMPANY_USER.userType -> UserMode.COMPANY_USER
         else ->UserMode.REGULAR_USER
